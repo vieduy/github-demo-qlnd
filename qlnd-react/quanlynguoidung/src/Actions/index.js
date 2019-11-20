@@ -6,3 +6,10 @@ export const addUser = (user) => {
         user
     }
 }
+
+export const delUser = (user) => {
+    return {
+        type: types.DEL_USER,
+        user
+    }
+}

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Modal, Button} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import * as actions from './../Actions/index';
 
 class Item extends Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class Item extends Component {
     };
       this.close = this.close.bind(this);
       this.open = this.open.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
     }
     close() {
         this.setState({ showModal: false });
@@ -16,6 +19,11 @@ class Item extends Component {
 
     open() {
         this.setState({ showModal: true });
+    }
+
+    handleSubmit(user){
+      this.props.onDelUser(user);
+      this.close();
     }
 
     render(){
@@ -28,8 +36,7 @@ class Item extends Component {
             <td>{user.team}</td>
             <td>{user.permission}</td>
             <td>
-              <a onClick={this.open} href='#/' className="edit" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Edit"></i></a>
-              <a onClick={this.open} href='#/' className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i></a>
+              <a onClick={this.open} className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i></a>
             </td>
             <Modal show={this.state.showModal} onHide={this.close}>
                 <Modal.Header closeButton>
@@ -39,7 +46,7 @@ class Item extends Component {
                   <p>Are you sure you want to delete these Records?</p>     
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className='btn-danger' onClick={this.close}>Delete</Button>
+                    <Button className='btn-danger' onClick={() => this.handleSubmit(user)}>Delete</Button>
                     <Button onClick={this.close}>Cancel</Button>
                 </Modal.Footer>
               </Modal>      
@@ -48,5 +55,13 @@ class Item extends Component {
     }
   }
   
+  const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onDelUser: user => {
+          dispatch(actions.delUser(user));
+        }
+    }
+  }
 
-  export default Item;
+  export default connect(null, mapDispatchToProps)(Item);
+  // export default Item;

@@ -20,7 +20,13 @@ class List extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     close() {
-        this.setState({ showModal: false });
+        this.setState({
+             showModal: false,
+             username: '',
+             password: '',
+             team: '',
+             permission: ''
+        });
     }
     
     open() {
@@ -29,7 +35,6 @@ class List extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state);
         this.props.onAddUser(this.state);
         this.close();
     }
@@ -76,18 +81,6 @@ class List extends Component {
                     {listUsers}
                 </tbody>
             </table>
-              {/* <div className="clearfix">
-                  <div className="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                  <ul className="pagination">
-                  <li className="page-item disabled"><a href="#/">Previous</a></li>
-                  <li className="page-item"><a href="#/" className="page-link">1</a></li>
-                  <li className="page-item"><a href="#/" className="page-link">2</a></li>
-                  <li className="page-item active"><a href="#/" className="page-link">3</a></li>
-                  <li className="page-item"><a href="#/" className="page-link">4</a></li>
-                  <li className="page-item"><a href="#/" className="page-link">5</a></li>
-                  <li className="page-item"><a href="#/" className="page-link">Next</a></li>
-                  </ul>
-              </div> */}
                 <Modal show={this.state.showModal} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title><h4>Add User</h4></Modal.Title>
