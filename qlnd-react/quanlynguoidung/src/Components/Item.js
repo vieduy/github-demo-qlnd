@@ -36,6 +36,7 @@ class Item extends Component {
             <td>{user.team}</td>
             <td>{user.permission}</td>
             <td>
+            {/* eslint-disable-next-line */}
               <a onClick={this.open} className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i></a>
             </td>
             <Modal show={this.state.showModal} onHide={this.close}>
