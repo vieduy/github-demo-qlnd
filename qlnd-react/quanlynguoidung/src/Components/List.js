@@ -94,7 +94,7 @@ class List extends Component {
                   </div>
                   </div>
               </div>
-            <table className="table table-striped table-hover">
+            <table className="table table-striped table-hover table-responsive">
                 <thead>
                 <tr>
                     <th>ID</th>
