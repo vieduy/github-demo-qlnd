@@ -41,7 +41,7 @@ class Item extends Component {
             <td>{typeName}</td>
             <td>
             {/* eslint-disable-next-line */}
-              <a onClick={this.open} className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i></a>
+             <button style={{textAlign: "center"}} className="btn btn-danger" onClick={this.open}  data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i>Delete</button>
             </td>
             <Modal show={this.state.showModal} onHide={this.close}>
                 <Modal.Header closeButton>
