@@ -7,7 +7,8 @@ class Item extends Component {
   constructor(props) {
     super(props);
       this.state = {
-        showModal: false
+        showModal: false,
+        showAlert: false
     };
       this.close = this.close.bind(this);
       this.open = this.open.bind(this);
@@ -28,13 +29,16 @@ class Item extends Component {
 
     render(){
       const user = this.props;
+      let typeName = '';
+      if (user.type === 0) typeName = 'Normal User';
+      else typeName = 'Admin';
       return (
           <tr>
             <td>{user.index}</td>
             <td>{user.username}</td>
             <td>{user.password}</td>
-            <td>{user.team}</td>
-            <td>{user.permission}</td>
+            <td>{user.doihinh}</td>
+            <td>{typeName}</td>
             <td>
             {/* eslint-disable-next-line */}
               <a onClick={this.open} className="delete" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete"></i></a>
@@ -50,16 +54,17 @@ class Item extends Component {
                     <Button className='btn-danger' onClick={() => this.handleSubmit(user)}>Delete</Button>
                     <Button onClick={this.close}>Cancel</Button>
                 </Modal.Footer>
-              </Modal>      
+              </Modal>
           </tr>
       );
     }
   }
   
+
   const mapDispatchToProps = (dispatch, props) => {
     return {
         onDelUser: user => {
-          dispatch(actions.delUser(user));
+          dispatch(actions.delUserRequest(user));
         }
     }
   }

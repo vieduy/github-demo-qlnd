@@ -8,27 +8,46 @@ class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          showAlert: false,
           showModal: false,
           username: '',
           password: '',
-          team: '',
-          permission: ''
+          doihinh: '',
+          type: '0'
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentDidMount(){ 
+        this.props.onGetUsers();
+    }
+
     close() {
         this.setState({
-             showModal: false,
-             username: '',
-             password: '',
-             team: '',
-             permission: ''
+            showModal: false,
+            username: '',
+            password: '',
+            doihinh: '',
+            type: 'Normal User'
         });
     }
     
+    closeAlert = () => {
+        this.setState({
+            showAlert: false
+        });
+        this.getUsers();
+    }
+
+    openAlert = () => {
+        this.setState({
+            showAlert: true
+        });
+    }
+
     open() {
         this.setState({ showModal: true });
     }
@@ -37,6 +56,15 @@ class List extends Component {
         event.preventDefault();
         this.props.onAddUser(this.state);
         this.close();
+        this.openAlert();
+        this.setState({
+            showAlert: false,
+            showModal: false,
+            username: '',
+            password: '',
+            doihinh: '',
+            type: '0'
+        });
     }
 
     handleInputChange(event) {
@@ -52,7 +80,7 @@ class List extends Component {
     render(){
         const { users } = this.props;
         const listUsers = users.map( (user, index) => {
-            return <Item username={user.username} password={user.password} team={user.team} permission={user.permission} key={index} index={index+1}/>
+            return <Item username={user.username} password={user.password} doihinh={user.doihinh} type={user.type} key={index} index={index+1} _id={user._id} getUsers={this.getUsers}/>
         });
       return (
             <div className="table-wrapper">
@@ -73,7 +101,7 @@ class List extends Component {
                     <th>Username</th>
                     <th>Password</th>
                     <th>Team</th>
-                    <th>Permission</th>
+                    <th>Type</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -97,17 +125,30 @@ class List extends Component {
                             </div>
                             <div className="form-group">
                                 <label>Team</label>
-                                <input name="team" className="form-control" id="ex1" type="text" placeholder="Team" value={this.state.team} onChange={this.handleInputChange} required />
+                                <input name="doihinh" className="form-control" id="ex1" type="text" placeholder="Đội Hình" value={this.state.doihinh} onChange={this.handleInputChange} required />
                             </div>
                             <div className="form-group">
-                                <label>Permission</label>
-                                <input name="permission" className="form-control" id="ex1" type="text" placeholder="Permission" value={this.state.permission} onChange={this.handleInputChange} required />
+                                <select name="type" value={this.state.type} onChange={this.handleInputChange}>
+                                    <option value={0}>User</option>
+                                    <option value={1}>Admin</option>
+                                </select>                        
                             </div>
                         </form>					                   
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleSubmit} className="btn btn-primary" value="Submit">Submit</Button>
                         <Button className='btn-danger' onClick={this.close}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal variant="success" onHide={this.closeAlert} show={this.state.showAlert}>
+                    <Modal.Header closeButton>
+                        <Modal.Title><h4>Thông báo</h4></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Thêm thành công</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.closeAlert} className="btn btn-primary" value="Submit">Close</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -124,7 +165,10 @@ class List extends Component {
   const mapDispatchToProps = (dispatch) => {
       return {
           onAddUser: user => {
-            dispatch(actions.addUser(user));
+            dispatch(actions.addUserRequest(user));
+          },
+          onGetUsers: users => {
+              dispatch(actions.actFetchUsersRequest(users));
           }
       }
   }
